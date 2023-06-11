@@ -1,13 +1,11 @@
 #include <iostream>
 #include <cctype>
 using namespace  std;
-
-
 bool isInteger(string a){
     int len = a.length(), count = 0;
     for (int i = 0; i < len; i++)
     {
-        if(isdigit(a[i])){}
+        if(isdigit(a[i]) || a[i]=='.'){}
         else
             count++;
 
@@ -22,18 +20,17 @@ bool isInteger(string a){
 //---------------------------------- Checks if the given string is a number, and lets the user enter agian if not -----------------------
 
 void checkAge(string ans, string answer[], int i){
-    string temp;
-    int len = ans.length();
+    string temp = ans;
+    int len = temp.length();
     
-    while (!isInteger(ans) || len > 2 || stoi(ans) <= 10)
+    while (!isInteger(temp) || len > 2 || stoi(temp) <= 10)
     {
         cout<<"   please enter your age correctly again (age has to be between 11 and 99): ";
         cin>>temp;
-        ans = temp;
-        len = ans.length();
-    }
-       answer[i] = ans;
-              
+        len = temp.length();
+        answer[i] = temp ; 
+    }   
+    answer[i] = temp ;     
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -50,35 +47,52 @@ string toLower(string a){
     return lower;
 }
 
-bool checkIfInside(string ans, string dep[]){
-    int len = sizeof(dep)/sizeof(dep[0]), count = 0;
-    for (int i = 0; i < len; i++)
-    {
+bool checkIfInside(string ans, int len, string dep[]){
+    int count = 0;
+    bool check = false ;
+    for (int i = 0; i < len; i++){
         if (ans == dep[i])
-            count++;
+            check = true ;  
     }
-    if(count == 0)
-        return false;
-    else
-        return true;
     
+    return check ;
 }
 
 void checkDepartement(string ans, string answer[], int m)
 {
     string departement [] = {"computer engineering","electrical engineering", "mechanical engineering","civil engineering","software engineering","information system","information technology"
                             ,"cyber security","food engineering","electro mechanical"};
-        
-    string lower = toLower(ans);
-    while (!checkIfInside(lower, departement))
-    {
-        cout << "   please enter the correct department: ";
-        getline(cin, ans);
-        lower = toLower(ans);
+    int len = sizeof(departement)/sizeof(departement[0]);
 
-    }
+    string lower = toLower(ans);
+        while(!checkIfInside(lower, len, departement)) {
+            cout << "   please enter your department again : ";
+            getline(cin, ans);
+            lower = toLower(ans);
+        }
+    
     answer[m] = lower;
     
+}
+void checkGPA (string ans , string answer [], int i){
+    string temp = ans ;
+    while (!isInteger(ans) || stof(ans) > 4){
+        cout<<" Please enter your GPA : " ;
+        cin>> ans;
+        temp = ans;
+        answer[i] = temp ; 
+    }
+    answer[i] = temp ;
+}
+void checkPhonenumber (string ans , string answer [] , int i ){
+    string temp = ans ;
+    while(!isInteger(ans) || ans.length() > 10){
+       cout<<"please enter your phone number again " ;
+       cin>>ans ;
+       temp = ans ; 
+       answer [i] = temp ; 
+    }
+    answer[i] = temp ; 
 }
 
 //------------------------------------------------------checks the email has '@' sign and '.com' at the end--------------------------------
@@ -108,16 +122,26 @@ int main()
     string question[] = {"enter your first name: ","enter your middle name: ","enter your last name: ","enter your age: ","enter your department: ","enter your GPA: ","enter your phone number: ","Enter your E-mail adress: "};
     string answer[8];
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++) 
     {
-        string ans = "";
+        string ans;
         cout<<question[i];
-        getline(cin, ans);
-        if (i == 3)
-            checkAge(ans, answer, i);
-        if(i==4)
+        if (i == 3){
+            getline(cin, ans);
+            checkAge(ans, answer, i);}
+        else if (i==5){
+            getline(cin, ans);
+            checkGPA(ans, answer , i ) ; }
+        else if(i==4){
+            getline(cin, ans);
             checkDepartement(ans ,answer,i);
+        }
+        else if (i== 6){
+            getline(cin, ans);
+            checkPhonenumber(ans , answer , i) ; 
+        }    
         else if(i == 7){
+            getline(cin, ans);
             if (checkEmail(ans))
                 answer[i] = ans;
             else{
@@ -129,11 +153,13 @@ int main()
                 answer[i]=ans;
             }
         }
-        else
+        else{
+            getline(cin, ans);
             answer[i] = ans;
+        }
 
     }
-cout<<"-----------------------------------------------------------------------\n";
+cout<<" -----------------------------------------------------------------------\n   ";
 for (int i = 0; i < 8; i++)
 {
     cout<<question[i]<<" = "<<answer[i]<<endl;
