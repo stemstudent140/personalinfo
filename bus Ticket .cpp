@@ -14,7 +14,7 @@ struct busTicket {
     string mName ;
     string lName;
     int age;
-    int phoneNum;
+    string phoneNum;
     string email;
     string departureAdress;
     string destinationAdress;
@@ -143,14 +143,14 @@ bool checkIfInside(string ans, int len, string dep[]){
     return check ;
 }
 
-int checkPhonenum (string ans){
+string checkPhonenum (string ans){
     string temp = ans ;
     while(!isInteger(ans) || ans.length() > 10 || ans.length() < 10 ) {
        cout<<"\t  Enter correctly  phone number again ( must be 10 digit ) : ";
        cin>>ans ;
        temp = ans ; 
     }
-    return stoi(temp) ; 
+    return temp ; 
 }
 
 //------------------------------------------------------checks the email has '@' sign and '.com' at the end--------------------------------
@@ -197,26 +197,30 @@ int generateTicketNumber(){
 }
 
 void display ( busTicket passengerList[] , int length )
-{
-    for (int i = 0; i < length ; i++)
+{ 
+    if (length == 0)
+       cout<< endl <<"\tThere is no passenger at the list "<<endl ; 
+    else 
     {
-        
-              cout << "\n----------------------Passenger List "<< i + 1<<"------------------------------\n";
+       for (int i = 0; i < length ; i++)
+            {
+                
+                    cout << "\n----------------------Passenger List "<< i + 1<<"------------------------------\n";
 
-        cout << "Full Name :  " << passengerList[i].fName << " " + passengerList[i].mName + " " + passengerList[i].lName << endl;
-        cout << "Age: " << passengerList[i].age << endl;
-        cout << "Phone Number: " << passengerList[i].phoneNum << endl;
-        cout << "E-mail Adress: " << passengerList[i].email << endl;
-        cout << "Departure Adress: " <<passengerList[i].departureAdress << endl;
-        cout << "Destination Adress: " <<passengerList[i].destinationAdress << endl;
-        cout << "Departure time:  " << passengerList[i].departureDate.hour << ":00 ,  Date :  " << passengerList[i].departureDate.date << "/" ;
-        cout << passengerList[i].departureDate.month << "/" << passengerList[i].departureDate.year << endl;
-        cout << endl << "    Your Ticket Number:  " << passengerList[i].ticketNumber << endl;
-        cout<<"------------------------------------------------------------------------------------------------------------------------";
+                cout << "Full Name :  " << passengerList[i].fName << " " + passengerList[i].mName + " " + passengerList[i].lName << endl;
+                cout << "Age: " << passengerList[i].age << endl;
+                cout << "Phone Number: " << passengerList[i].phoneNum << endl;
+                cout << "E-mail Adress: " << passengerList[i].email << endl;
+                cout << "Departure Adress: " <<passengerList[i].departureAdress << endl;
+                cout << "Destination Adress: " <<passengerList[i].destinationAdress << endl;
+                cout << "Departure time:  " << passengerList[i].departureDate.hour << ":00 ,  Date :  " << passengerList[i].departureDate.date << "/" ;
+                cout << passengerList[i].departureDate.month << "/" << passengerList[i].departureDate.year << endl;
+                cout << endl << "    Your Ticket Number:  " << passengerList[i].ticketNumber << endl;
+                cout<<"------------------------------------------------------------------------------------------------------------------------";
+            }
     }
+   
 }
-
-
 int main(){
     busTicket passengerList[100];
     string a = "y";
@@ -254,25 +258,26 @@ int main(){
                 getline ( cin , passengerInfo.departureAdress );
                 cout << "Enter your Destination :  " ;
                 getline (cin , passengerInfo.destinationAdress) ;
-                cin.ignore();
+                
                     timeOfFlight t;
                     cout << "           Your Departure date(use Numbers)  \n";
-                    cout << "   Enter your Departure time(year) : " ;
+                    cout << "           Enter your Departure time(year) : " ;
                     cin >> t.year;
                     t.year = checkYear(t.year);
-                    cout << "   Enter your Departure time(month) : "  ;
+                    cout << "           Enter your Departure time(month) : "  ;
                     cin >> t.month;
                     t.month = checkMonth(t.month);
-                    cout << "   Enter your Departure time(date) : " ;
+                    cout << "            Enter your Departure time(date) : " ;
                     cin >> t.date;
                     t.date = checkDate(t.date);
-                    cout << "   Enter your Departure time(hour) : " ;
+                    cout << "            Enter your Departure time(hour) : " ;
                     cin >> t.hour;
                     t.hour = checkHour(t.hour);
                     passengerInfo.departureDate = t;
                 passengerInfo.ticketNumber = generateTicketNumber();
                 passengerList[i] = passengerInfo;
                 i++;
+                cout<<endl <<"   Passenger succesfully registred    " <<endl ;
              break ; 
             }
         case 2: 
